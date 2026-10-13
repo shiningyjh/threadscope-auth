@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'; img-src 'none'; base-uri 'none'; form-action 'none'"><title>ThreadScope 인증</title><style>body{font:18px system-ui;max-width:640px;margin:80px auto;padding:24px;line-height:1.7}button{font:inherit;padding:12px 24px}#status{white-space:pre-wrap}</style></head>
+<body><h1>ThreadScope 인증</h1><p id="status">인증 결과를 확인합니다.</p><button id="copy" hidden>인증 결과 복사</button><p>복사한 결과는 로컬 OAuth 도구에 입력하세요. 채팅이나 공개 저장소에 붙여넣지 마세요.</p><script>
+const params=new URLSearchParams(location.search);const code=params.get('code');const state=params.get('state');const error=params.get('error');
+const result=location.href;history.replaceState(null,'',location.pathname);
+const status=document.getElementById('status');const copy=document.getElementById('copy');
+if(error){status.textContent='인증이 거부되었거나 실패했습니다: '+error;}
+else if(code&&state){status.textContent='인증 코드가 도착했습니다. 아래 버튼으로 복사한 뒤 터미널에 입력하세요.';copy.hidden=false;copy.onclick=async()=>{try{await navigator.clipboard.writeText(result);status.textContent='복사했습니다. 로컬 도구에 입력하세요.';}catch(e){status.textContent='클립보드 복사가 차단됐습니다. 인증을 다시 진행해 브라우저의 복사 권한을 확인하세요.';}};}
+else{status.textContent='콜백 페이지가 준비되어 있습니다. 로컬 OAuth 도구에서 만든 인증 링크로 시작하세요.';}
+</script></body></html>
